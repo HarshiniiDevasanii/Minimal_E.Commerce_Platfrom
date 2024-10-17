@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourites</title>
+    <style>
+         *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            background-image: url("https://t4.ftcdn.net/jpg/08/90/89/37/240_F_890893752_k7gJ5gsaF1SHQfFSl3gbGNiM45JJxvXZ.jpg");
+            background-size: cover;
+
+        }
+        nav {
+            height: 80px;
+            width: 100%;
+            background-color: rgba(72, 70, 70, 0.3);
+            color: white;
+        }
+        nav a {
+            padding: 20px;
+            color: white;
+            font-size: 1.4rem;
+            margin-left: 150px;
+            text-decoration: none;
+        }
+        nav li {
+            list-style-type: none;
+            display: inline-block;
+            padding-top: 20px;
+        }
+        a:hover {
+            color: beige;
+        }
+        .favourite-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .favourite-item img {
+            width: 100px;
+            height: auto;
+        }
+        .favourite-item p {
+            margin: 0;
+        }
+        #remove{
+            background-color: rgb(132, 132, 195);
+            color: rgb(248, 238, 238);
+            height:40px;
+            width:100px;
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="home.html"><i class="fas fa-home icon"></i>Home</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope icon"></i>Contact Us</a></li>
+            <li><a href="favourites.html"> Favourites &hearts;</a></li>
+            <li><a href="cart.html"><i class="fas fa-shopping-cart icon"></i>Cart</a></li>
+            <li><a href="account.html"><i class="fa-solid fa-user"></i>Account</a></li>
+        </ul>
+    </nav>
+    <div id="favourites-list"></div>
+
+    <script>
+        function loadFavourites() {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const favouritesList = document.getElementById('favourites-list');
+
+            favouritesList.innerHTML = '';
+
+            favourites.forEach(item => {
+                const favouriteItem = document.createElement('div');
+                favouriteItem.classList.add('favourite-item');
+
+                favouriteItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <p>${item.title} - $${item.price}</p>
+                    <button onclick="removeFromFavourites(${item.id})" id="remove" >Remove </button>
+                `;
+
+                favouritesList.appendChild(favouriteItem);
+            });
+        }
+        function removeFromFavourites(id) {
+            let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            favourites = favourites.filter(item => item.id !== id);
+
+            localStorage.setItem('favourites', JSON.stringify(favourites));
+            loadFavourites();
+        }
+        loadFavourites();
+    </script>
+</body>
+</html>
